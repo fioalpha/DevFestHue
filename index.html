@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Teste Automacao Casa</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(e){
+
+				var setLampada = 3;
+
+				var myFirebaseRef3 = new Firebase("https://blistering-fire-5182.firebaseio.com/");
+
+				$("#lampada1").click(function(){
+					lampada(3)
+					
+				});
+				
+				$("#lampada2").click(function(){
+					lampada(4)
+				});
+
+				$("#lampada3").click(function(){
+					lampada(5)
+				});
+
+				function lampada(lampada){
+					event.preventDefault();
+
+					_lampada = lampada;
+
+   					btnLigar = ($("#ligar").prop("checked")) ? true : false;
+   					btnEffect = ($("#effect" ).prop("checked")) ? "colorloop" : "nome";
+
+   					var btnSaturacao = parseInt($("#saturar").val(), 10);
+   					var btnBilho = parseInt($("#brilho").val(), 10);
+   					var btnHue   = parseInt($("#hue").val(), 10);
+   					var btnExioX = parseFloat($("#eixox").val());
+   					var btnExioY = parseFloat($("#eixoy").val());
+
+   					//Criando objeto do tipo json 
+   					var json = 
+					{
+						"numeroLampada":_lampada,
+						"funcao": {
+							"hue": btnHue,
+							"on": btnLigar,
+							"effect": btnEffect,
+							"alert": "none",
+							"bri": btnBilho,
+							"sat": btnSaturacao,
+							"ct": 500,
+							"xy": [btnExioX, btnExioY],
+							
+						}
+					};
+
+   					console.log(JSON.stringify(json));	
+   					
+   					$.ajax({
+   					 	url: "http://192.168.1.14/api/1edcaf253d1c08273b478ef12d24cb53/lights/"+_lampada+"/state", 
+   					 	method:"PUT",
+   					 	data: JSON.stringify(json),
+  						dataType: "json",
+   					 	success: function(result){
+        					markers = JSON.stringify(result);
+    						console.log(markers);
+    					},
+    					error:function(error){
+    						console.log(JSON.stringify(error));
+    					}
+    				});
+
+    				myFirebaseRef3.set(json);
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<form>
+			<p>
+				<button type="button" id="lampada1">Lampada 1</button>
+				<button type="button" id="lampada2">Lampada 2</button>
+				<button type="button" id="lampada3">Lampada 3</button>
+			</p>
+			<p>
+				<input type="checkbox" name="ligar" id="ligar" value="Bike">Ligar</input>
+			</p>
+			<p>
+				<input type="checkbox" name="effect" id="effect" value="Ligar">Efeito</input>
+			</p>	
+			<p>
+				Saturar
+				<input name="saturar" id="saturar" type="range" min="1" max="254" step="1" value="0"> 
+			
+			</p>
+
+			<p>
+				Brilho
+				<input name="brilho" id="brilho" type="range" min="1" max="254" step="1" value="0"> 
+			</p>
+			<p>
+				Hue
+				<input name="hue" id="hue"type="range" min="1" max="65535" step="1" value="0"> 
+			</p>
+			<p>
+				Eixo X
+				<input name="eixox" id="eixox" type="range" min="0.0001" max="1" step="0.0001" value="0"> 
+				Eixo Y
+				<input name="eixoy" id="eixoy" type="range" min="0.0001" max="1" step="0.0001" value="0"> 
+			</p>
+		</form>
+	</body>	
+</html>

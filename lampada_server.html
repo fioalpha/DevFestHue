@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Teste Automacao Casa</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(e){
+
+				
+
+				var myFirebaseRef = new Firebase("https://blistering-fire-5182.firebaseio.com/");
+			
+				myFirebaseRef.on('value', function(snapshot) {
+					var callback = snapshot.val();
+					ConectarLampda(callback);
+				});
+				
+  				function ConectarLampda(jsonLampada){
+
+  					var ipLampada = "";
+					var keyHue = "";
+
+  					//ipLampada+""+keyHue+"lights/"+""+"/state", 
+  					console.log(jsonLampada);
+  					//console( "http://192.168.1.14/api/");	
+	  				/*$.ajax({
+	   					 	url: "http://192.168.1.14/api/1edcaf253d1c08273b478ef12d24cb53/lights/"+jsonLampada.numeroLampada+"/state",
+	   					 	method:"PUT",
+	   					 	data:jsonLampada.funcao,
+	   					 	success: function(result){
+	        					markers = JSON.stringify(result);
+	    						alert(markers);
+	    					},
+	    					error:function(error){
+	    						console.log(error);
+	    					}
+	    				});*/
+	  			}
+			});
+		</script>
+	</head>
+	<body></body>
+	
+</html>

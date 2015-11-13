@@ -1,0 +1,13 @@
+<script>
+	
+	HUE = {
+		alert: null,
+		bri: null,
+		ct: null,
+		effect: null,
+		hue: null,
+		on: null,
+		sat: null,
+		xy: [null],
+	}
+</script>
